@@ -1,0 +1,75 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html style="height: 100%;">
+        {% include "head.html" %}
+<body style="height: 100%;">
+   
+
+    <!--================Home Banner Area =================-->
+    <section class="banner_area" style="height: 100%;">
+        <div class="banner_inner d-flex align-items-center" style="height: 100%;">
+            <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background="" style="height: 100% !important;"></div>
+            <div class="container">
+                <br><br>
+                <div class="banner_content ">
+                    <!--================ Start About Us Area =================-->
+	<section class="about_area section_gap_bottom banner_content ">
+		<div class="container">
+			<div class="row">	
+				<div class="single_about row">
+					<div class="col-lg-6 col-md-12  about_left">
+						<div class="about_thumb">
+							<img src="{% static 'img/about-img.jpg' %}" class="img-fluid" alt="">
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-12 about_right">
+						<div class="about_content">
+                                <form method="POST">
+                                        {% block content %}
+                                        {% endblock %}
+                                        {% csrf_token %}
+                                        {% if messages %}
+                                            {% for message in messages %}
+                                                <div class="alert alert-{{ message.tags }}">
+                                                    {{ message }}
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        <fieldset class="form-group">
+                                                <h2 style="color:black;" class="text-center">Sign In</h2>
+                                            {{ form|crispy }}
+                                        </fieldset>
+                                        <div class="form-group text-center">
+                                            <button class="primary_btn" type="submit">Log in</button>
+                                        </div>
+                                    </form>
+                                    <div class="border-top pt-3">
+                                        <small class="text-muted">
+                                            Don't Have An Account? <a class="ml-2" href="{% url 'register' %}">Sign Up</a>
+                                        </small>
+                                    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================ End About Us Area =================-->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Home Banner Area =================-->
+    
+    
+        
+	
+        
+        
+        
+        
+    {% include "scripts.html" %}
+</body>
+
+</html>

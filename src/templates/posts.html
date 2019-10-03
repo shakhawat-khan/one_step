@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!--================ Home Banner Area =================-->
+<section class="banner_area">
+    <div class="banner_inner d-flex align-items-center">
+        <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background="">
+        </div>
+        <div class="container">
+            <div class="banner_content text-center">
+                <h2>Our Blog</h2>
+                <p>Platea nullam nostra laoreet potenti hendrerit laoreet enim nisl</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================ End Home Banner Area =================-->
+
+<!--================Blog Categorie Area =================-->
+<section class="blog_categorie_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="categories_post">
+                    <img src="{% static 'img/blog/cat-post/cat-post-3.jpg' %}" alt="post">
+                    <div class="categories_details">
+                        <div class="categories_text">
+                            <a href="single-blog.html">
+                                <h5>Social Life</h5>
+                            </a>
+                            <div class="border_line"></div>
+                            <p>Enjoy your social life together</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="categories_post">
+                    <img src="{% static 'img/blog/cat-post/cat-post-2.jpg' %}" alt="post">
+                    <div class="categories_details">
+                        <div class="categories_text">
+                            <a href="single-blog.html">
+                                <h5>Politics</h5>
+                            </a>
+                            <div class="border_line"></div>
+                            <p>Be a part of politics</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="categories_post">
+                    <img src="{% static 'img/blog/cat-post/cat-post-1.jpg' %}" alt="post">
+                    <div class="categories_details">
+                        <div class="categories_text">
+                            <a href="single-blog.html">
+                                <h5>Food</h5>
+                            </a>
+                            <div class="border_line"></div>
+                            <p>Let the food be finished</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================Blog Categorie Area =================-->
+
+<!--================Blog Area =================-->
+<section class="blog_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="blog_left_sidebar">
+                    {% for post in posts %}
+                    <article class="row blog_item">
+                        <div class="col-md-3">
+                            <div class="blog_info text-right">
+                                <div class="post_tag">
+                                    {% for catagory in post.catagory.all %}
+                                    <a href="#">{{catagory}}, </a>
+                                    {% endfor %}
+                                </div>
+                                <ul class="blog_meta list">
+                                    <li><a href="#">{{post.author}}<i class="lnr lnr-user"></i></a></li>
+                                    <li><a href="#">{{post.date_posted}}<i class="lnr lnr-calendar-full"></i></a></li>
+                                    <li><a href="#">{{ comments.count }} Comment{{ comments|pluralize }}<i
+                                                class="lnr lnr-bubble"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="blog_post">
+                                <img src="{{ post.thumbnail.url }}" alt="" style="width: 555px; height:280px;">
+                                <div class="blog_details">
+                                    <a href="{% url 'post-detail' post.id %}">
+                                        <h2>{{post.title}}</h2>
+                                    </a>
+                                    <p>{{post.content|truncatewords:50}}</p>
+                                    <a href="{% url 'post-detail' post.id %}" class="blog_btn">View More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+                    <!-- <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12">{% if is_paginated %}
+                                {% if page_obj.has_previous %}
+                                <a class="primary_btn yellow_btn small px-1" href="?page=1">First</a>
+                                <a class="yellow_btn primary_btn small px-1"
+                                    href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                {% endif %}
+                                {% for num in page_obj.paginator.page_range %}
+
+                                {% if page_obj.number == num %}
+                                <a class="primary_btn yellow_btn small px-1" href="?page={{ num }}">{{ num }}</a>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <a class="primary_btn yellow_btn small px-1" href="?page={{ num }}">{{ num }}</a>
+                                {% endif %}
+                                {% endfor %}
+
+                                {% if page_obj.has_next %}
+                                <a class="primary_btn yellow_btn small px-1"
+                                    href="?page={{page_obj.next_page_number}}">Next</a>
+                                <a class="primary_btn yellow_btn small px-1"
+                                    href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                                {% endif %}
+
+                                {% endif %}</div>
+                        </div>
+                    </div> -->
+                    <nav class="blog-pagination justify-content-center d-flex">
+                        {% if is_paginated %}
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+
+                                <a href="?page={{ page_obj.previous_page_number }}" class="page-link"
+                                    aria-label="Previous">
+                                    <span aria-hidden="true">
+                                        <span class="lnr lnr-chevron-left"></span>
+                                    </span>
+                                </a>
+
+                            </li>
+                            {% endif %}
+                            {% for num in page_obj.paginator.page_range %}
+
+                            {% if page_obj.number == num %}
+                            <li class="page-item"><a href="?page={{ num }}" class="page-link">{{ num }}</a></li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item"><a href="?page={{ num }}" class="page-link">{{ num }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a href="?page={{page_obj.next_page_number}}" class="page-link" aria-label="Next">
+                                    <span aria-hidden="true">
+                                        <span class="lnr lnr-chevron-right"></span>
+                                    </span>
+                                </a>
+                            </li>
+                            {% endif %}
+
+
+                        </ul>
+                        {% endif %}
+                    </nav>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="blog_right_sidebar">
+                    <aside class="single_sidebar_widget search_widget">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search Posts">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
+                            </span>
+                        </div><!-- /input-group -->
+                        <div class="br"></div>
+                    </aside>
+                    <aside class="single_sidebar_widget popular_post_widget">
+                        <h3 class="widget_title">Popular Posts</h3>
+                        {% for popular_post in popular %}
+                        <div class="media post_item">
+                            <img src="{{popular_post.thumbnail.url}}" alt="post" style="width:100px;height:60px;">
+                            <div class="media-body">
+                                <a href="{% url 'post-detail' popular_post.id %}">
+                                    <h3>{{popular_post.title}}</h3>
+                                </a>
+                                <p>{{popular_post.date_posted}}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="br"></div>
+                    </aside>
+                    <aside class="single_sidebar_widget ads_widget">
+                        <a href="#"><img class="img-fluid" src="{% static 'img/blog/add.jpg' %}" alt=""></a>
+                        <div class="br"></div>
+                    </aside>
+
+                    <aside class="single-sidebar-widget newsletter_widget">
+                        <h4 class="widget_title">Newsletter</h4>
+                        <p>
+                            Here, I focus on a range of items and features that we use in life without
+                            giving them a second thought.
+                        </p>
+                        <div class="form-group d-flex flex-row">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" id="inlineFormInputGroup"
+                                    placeholder="Enter email" onfocus="this.placeholder = ''"
+                                    onblur="this.placeholder = 'Enter email'">
+                            </div>
+                            <a href="#" class="bbtns">Subcribe</a>
+                        </div>
+                        <p class="text-bottom">You can unsubscribe at any time</p>
+                        <div class="br"></div>
+                    </aside>
+                    <aside class="single-sidebar-widget tag_cloud_widget">
+                        <h4 class="widget_title">Tag Clouds</h4>
+                        <ul class="list">
+                            {% for catagory in catagories %}
+                            <li><a href="#">{{catagory}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================Blog Area =================-->
+
+{% endblock %}

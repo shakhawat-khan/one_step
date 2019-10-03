@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<!--================ Home Banner Area =================-->
+<section class="banner_area">
+    <div class="banner_inner d-flex align-items-center">
+        <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background="">
+        </div>
+        <div class="container">
+            <div class="banner_content text-center">
+                <h2>Causes</h2>
+                <p>Platea nullam nostra laoreet potenti hendrerit laoreet enim nisl</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================ End Home Banner Area =================-->
+
+
+<!--================ Start Features Cause section =================-->
+<section class="features_causes">
+        <div class="container-fluid">
+                <div class="row justify-content-center py-5" style="background-color: #fafaff; border:1px solid #eeeeee;">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-2"><h3>Search By Budget:</h3></div>
+                    <div class="col-lg-8">
+                            
+                        <form  method="POST" enctype="multipart/form-data" action="{% url 'cause-budget' %}">
+                            {% csrf_token %}
+                                <div class="form-row">
+                                  <div class="col">
+                                    <input type="text" class="form-control" placeholder="Max Budget" name='maxBudget'>
+                                  </div>
+                                  <div class="col">
+                                    <input type="text" class="form-control" placeholder="Min Budget" name='minBudget'>
+                                  </div>
+                                  <div class="col">
+                                        <button class="btn btn-outline-info" type="submit">Find</button>
+                                    </div>
+                                </div>
+                              </form>
+               
+            
+        </div>
+                </div>
+            </div>
+    <div class="container py-4">
+        <div class="row">
+            
+                    {% for cause in causes %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <figure>
+                                    <img class="card-img-top img-fluid" src="{{ cause.thumbnail.url }}" alt="Card image cap"
+                                        style="height:270px;width:360px;">
+                                </figure>
+                                <div class="card_inner_body">
+                                    <h4 class="card-title"><a href="{% url 'cause-detail' cause.id %}"
+                                            style="color: black;">{{ cause.title }}</a></h4>
+                                    <p class="card-text">{{cause.description|truncatewords:50}}</p>
+                                    <div class="d-flex justify-content-between raised_goal">
+                                        <p>Raised: ${{ cause.raised }}</p>
+                                        <p><span>Goal: ${{ cause.goal }}</span></p>
+                                    </div>
+                                    <div class="d-flex justify-content-between donation align-items-center">
+                                        <a href="{% url 'cause-donate' cause.id %}" class="primary_btn">donate</a>
+                                        <p><span class="lnr lnr-heart"></span> {{cause.donation.count}} Donors</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+           
+
+            
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">{% if is_paginated %}
+                {% if page_obj.has_previous %}
+                <a class="primary_btn yellow_btn small px-1" href="?page=1">First</a>
+                <a class="yellow_btn primary_btn small px-1" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+
+                {% if page_obj.number == num %}
+                <a class="primary_btn yellow_btn small px-1" href="?page={{ num }}">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a class="primary_btn yellow_btn small px-1" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <a class="primary_btn yellow_btn small px-1" href="?page={{page_obj.next_page_number}}">Next</a>
+                <a class="primary_btn yellow_btn small px-1" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                {% endif %}
+
+                {% endif %}</div>
+        </div>
+    </div>
+</section>
+<!--================ End Features Cause section =================-->
+
+<!--================ Start CTA Area =================-->
+<div class="cta-area section_gap overlay">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <h1>Become a volunteer</h1>
+                <p>
+                    So seed seed green that winged cattle in. Gathering thing made fly you're
+                    divided deep leave on the medicene moved us land years living.
+                </p>
+                <a href="#" class="primary_btn yellow_btn rounded">join with us</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--================ End CTA Area =================-->
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!--================ Home Banner Area =================-->
+<section class="banner_area">
+    <div class="banner_inner d-flex align-items-center">
+        <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background="">
+        </div>
+        <div class="container">
+            <div class="banner_content text-center">
+                <h2>Events</h2>
+                <p>Platea nullam nostra laoreet potenti hendrerit laoreet enim nisl</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================ End Home Banner Area =================-->
+
+
+<!--================ Start Features Cause section =================-->
+<section class="features_causes">
+    <div class="container py-4">
+        <div class="row">
+            {% for event in events %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <figure>
+                            <img class="card-img-top img-fluid" src="{{ event.thumbnail.url }}"
+                                alt="Card image cap" style="height:270px;width:360px;">
+                        </figure>
+                        <div class="card_inner_body">
+                            <h4 class="card-title"><a href="{% url 'event-detail' event.id %}" style="color: black;">{{ event.title }}</a></h4>
+                            <p class="card-text">{{event.about|truncatewords:50}}</p>
+                            <div class="d-flex justify-content-between raised_goal">
+                            </div>
+                            <div class="justify-content-between">
+                                    <p>Schedule: {{ event.eventTime }}</p>
+                                    <p>Location: {{ event.area }}</p>
+                                </div>
+                            <div class="d-flex justify-content-between align-items-center pt-4">
+                                <a href="{% url 'event-detail' event.id %}" class="primary_btn">LEARN MORE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!--================ End Features Cause section =================-->
+
+<!--================ Start CTA Area =================-->
+<div class="cta-area section_gap overlay">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <h1>Become a volunteer</h1>
+                <p>
+                    So seed seed green that winged cattle in. Gathering thing made fly you're
+                    divided deep leave on the medicene moved us land years living.
+                </p>
+                <a href="#" class="primary_btn yellow_btn rounded">join with us</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--================ End CTA Area =================-->
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<!--================ Home Banner Area =================-->
+<section class="banner_area">
+	<div class="banner_inner d-flex align-items-center">
+		<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background="" style="filter: sepia(100%);background-image: url('{% static "img/Donate.jpg"%}')";>
+		</div>
+		<div class="container">
+			<div class="banner_content text-center">
+				<h1>Donate</h>
+			</div>
+		</div>
+	</div>
+</section>
+<!--================ End Home Banner Area =================-->
+
+<!--================ Start Recent Event Area =================-->
+<section class="condition-area event-details-area section_gap">
+	<div class="container">
+		<div class="row align-items-center justify-content-center">
+			<div class="col-lg-6 col-md-8 col-sm-10">
+				<div class="condition-left">
+					
+					<img class="img-fluid" src="{% static 'img/donate_side_img.jpg' %}" alt="">
+					
+				</div>
+			</div>
+			<div class="offset-lg-1 col-lg-5">
+				<div class="condition-right">
+                        <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <fieldset class="form-group">
+                                    <h1 style="color: #fdbb00;" class="text-center">Donation Form</h1>
+                                    {{ form|crispy }}
+                                </fieldset>
+                                <div class="form-group text-center">
+                                    <button class="primary_btn" type="submit">Donate</button>
+                                </div>
+                        </form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!--================ End Recent Event Area =================-->
+
+<!--================ Start CTA Area =================-->
+<div class="cta-area section_gap overlay">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-7">
+				<h1>Become a volunteer</h1>
+				<p>
+					So seed seed green that winged cattle in. Gathering thing made fly you're
+					divided deep leave on the medicene moved us land years living.
+				</p>
+				<a href="#" class="primary_btn yellow_btn rounded">join with us</a>
+			</div>
+		</div>
+	</div>
+</div>
+<!--================ End CTA Area =================-->
+
+{% endblock %}

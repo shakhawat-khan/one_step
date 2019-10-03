@@ -1,0 +1,39 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html style="height: 100%;">
+{% include "head.html" %}
+
+<body style="height: 100%;color: #60bc0f;">
+    {% include "header.html" %}
+
+
+
+    <!--================ Start footer Area  =================-->
+    <footer>
+        <div class="footer-area" style="height: 100vh;">
+            <div class="container" style="position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+                <div class="row justify-content-center ">
+                    <div class="col-lg-8 col-md-8 col-sm-6 ">
+                        <div class="single-footer-widget tp_widgets ">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <fieldset class="form-group">
+                                    <h2 style="color: #fdbb00;" class="text-center">Create an event</h2>
+                                    {{ form|crispy }}
+                                </fieldset>
+                                <div class="form-group text-center">
+                                    <button class="primary_btn" type="submit">Launch</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--================ End footer Area  =================-->
+    {% include "scripts.html" %}
+</body>
+
+</html>

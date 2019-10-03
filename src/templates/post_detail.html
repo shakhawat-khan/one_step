@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<!--================ Home Banner Area =================-->
+<section class="banner_area">
+    <div class="banner_inner d-flex align-items-center">
+        <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background="">
+        </div>
+        <div class="container">
+            <div class="banner_content text-center">
+                <h2>Blog Details</h2>
+                <p>Platea nullam nostra laoreet potenti hendrerit laoreet enim nisl</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================ End Home Banner Area =================-->
+
+<!--================Blog Area =================-->
+<section class="blog_area single-post-area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 posts-list">
+                <div class="single-post row">
+                    <div class="col-lg-12">
+                        <div class="feature-img">
+                            <img class="img-fluid" src="{{ post.thumbnail.url }}" alt=""
+                                style="width: 750px; height:350px;">
+                        </div>
+                    </div>
+                    <div class="col-lg-3  col-md-3">
+                        <div class="blog_info text-right">
+                            <div class="post_tag">
+                                {% for catagory in post.catagory.all %}
+                                <a href="#">{{catagory}}, </a>
+                                {% endfor %}
+                            </div>
+                            <ul class="blog_meta list">
+                                <li><a href="#">{{post.author}}<i class="lnr lnr-user"></i></a></li>
+                                <li><a href="#">{{post.date_posted}}<i class="lnr lnr-calendar-full"></i></a></li>
+                                <li><a href="#">{{ comments.count }} Comment{{ comments|pluralize }}<i
+                                            class="lnr lnr-bubble"></i></a></li>
+                            </ul>
+                            <ul class="social-links">
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-github"></i></a></li>
+                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-9 blog_details">
+                        <h2>{{post.title}}</h2>
+                        <p class="excert">
+                            {{post.content}}
+                        </p>
+
+                    </div>
+                </div>
+                <h5>{{ total_likes }} Like{{ total_likes|pluralize }}</h5>
+                {% if request.user.is_authenticated %}
+                <form action="{% url 'like_post' %}" method="Post">
+                    {% csrf_token %}
+                    {% if is_liked %}
+                    <button class="like" type="submit" name="post_id" value="{{post.id}}">
+                        <i class="fas fa-thumbs-down" style="font-size: 25px;cursor: pointer; color: #60bc0f;"></i>
+                    </button>
+                    {% else %}
+                    <button class="like" type="submit" name="post_id" value="{{post.id}}">
+                        <i class="fas fa-thumbs-up" style="font-size: 25px;cursor: pointer; color: #60bc0f;"></i>
+                    </button>
+                    {% endif %}
+                </form>
+                {% endif %}
+                <div class="navigation-area">
+                    <div class="row">
+                        {% if previous_post %}
+                        <div
+                            class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
+                            <div class="thumb">
+                                <img class="img-fluid" src="{{ previous_post.thumbnail.url }}" alt="" style="width:60px;height:60px;">
+                            </div>
+                            <div class="arrow">
+                                <a href="{% url 'post-detail' previous_post.id %}"><span
+                                        class="lnr text-white lnr-arrow-left"></span></a>
+                            </div>
+                            <div class="detials">
+                                <p>Prev Post</p>
+                                <a href="{% url 'post-detail' previous_post.id %}">
+                                    <h4>{{ previous_post.title }}</h4>
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if next_post %}
+                        <div
+                            class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+                            <div class="detials">
+                                <p>Next Post</p>
+                                <a href="{% url 'post-detail' next_post.id %}">
+                                    <h4>{{ next_post.title }}</h4>
+                                </a>
+                            </div>
+                            <div class="arrow">
+                                <a href="{% url 'post-detail' next_post.id %}"><span
+                                        class="lnr text-white lnr-arrow-right"></span></a>
+                            </div>
+                            <div class="thumb">
+                                <img class="img-fluid" src="{{ next_post.thumbnail.url }}" alt="" style="width:60px;height:60px;">
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="comments-area">
+                    <h4>{{ comments.count }} Comment{{ comments|pluralize }}</h4>
+                    {% for comment in comments %}
+                    <div class="comment-list">
+                        <div class="single-comment justify-content-between d-flex">
+                            <div class="user justify-content-between d-flex">
+                                <div class="thumb">
+                                    <img src="{{ comment.user.profile.image.url }}" alt=""
+                                        style="width:60px;height:60px;">
+                                </div>
+                                <div class="desc">
+                                    <h5 id="name">{{comment.user}}</h5>
+                                    <p class="date">{{comment.date_posted}}</p>
+                                    <p class="comment">
+                                        {{comment.content}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="reply-btn">
+                                <a href="#comment_section" class="btn-reply text-uppercase" id="reply" type="button">reply</a>
+                                <script>document.getElementById("reply").onclick = function () {
+                                     var x = document.getElementById("name").innerText };
+                                     document.getElementById("id_content").innerHTML = x;
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="comment-form" id="comment_section">
+                    <h4>Leave a Reply</h4>
+                    <form method="Post" >
+                        {% csrf_token %}
+                        {{comment_form|crispy}}
+                        {% if request.user.is_authenticated %}
+                        <input class="primary-btn primary_btn" type="submit" value="Post Comment">
+                        {% else %}
+                        <input class="primary-btn primary_btn" type="submit" value="Post Comment" disabled>
+                        {% endif %}
+
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="blog_right_sidebar">
+                    <aside class="single_sidebar_widget search_widget">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search Posts">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
+                            </span>
+                        </div><!-- /input-group -->
+                        <div class="br"></div>
+                    </aside>
+                    <aside class="single_sidebar_widget author_widget">
+                        <img class="author_img rounded-circle" src="{{ post.author.profile.image.url }}" alt="">
+                        <h4>{{ post.author.username }}</h4>
+                        <p>Senior blog writer</p>
+                        <div class="social_icon">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-github"></i></a>
+                            <a href="#"><i class="fa fa-behance"></i></a>
+                        </div>
+                        <p>Boot camps have its supporters andit sdetractors. Some people do not understand why you
+                            should have to spend money on boot camp when you can get. Boot camps have itssuppor ters
+                            andits detractors.</p>
+                        <div class="br"></div>
+                    </aside>
+                    <aside class="single_sidebar_widget popular_post_widget">
+                        <h3 class="widget_title">Popular Posts</h3>
+                        {% for popular_post in popular %}
+                        <div class="media post_item">
+                            <img src="{{popular_post.thumbnail.url}}" alt="post" style="width:100px;height:60px;">
+                            <div class="media-body">
+                                <a href="{% url 'post-detail' popular_post.id %}">
+                                    <h3>{{popular_post.title}}</h3>
+                                </a>
+                                <p>{{popular_post.date_posted}}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="br"></div>
+                    </aside>
+                    <aside class="single_sidebar_widget ads_widget">
+                        <a href="#"><img class="img-fluid" src="{% static 'img/blog/add.jpg' %}" alt=""></a>
+                        <div class="br"></div>
+                    </aside>
+
+                    <aside class="single-sidebar-widget newsletter_widget">
+                        <h4 class="widget_title">Newsletter</h4>
+                        <p>
+                            Here, I focus on a range of items and features that we use in life without
+                            giving them a second thought.
+                        </p>
+                        <div class="form-group d-flex flex-row">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" id="inlineFormInputGroup"
+                                    placeholder="Enter email" onfocus="this.placeholder = ''"
+                                    onblur="this.placeholder = 'Enter email'">
+                            </div>
+                            <a href="#" class="bbtns">Subcribe</a>
+                        </div>
+                        <p class="text-bottom">You can unsubscribe at any time</p>
+                        <div class="br"></div>
+                    </aside>
+                    <aside class="single-sidebar-widget tag_cloud_widget">
+                        <h4 class="widget_title">Tag Clouds</h4>
+                        <ul class="list">
+                            {% for catagory in catagories %}
+                            <li><a href="#">{{catagory}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================Blog Area =================-->
+
+{% endblock %}
